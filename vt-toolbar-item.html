@@ -1,0 +1,36 @@
+<link rel="import" href="../vt-core-elements/vt-model-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../core-icon/core-icon.html">
+
+<polymer-element name="vt-toolbar-item" extends="vt-model-element" attributes="icon" icon="add">
+  <template>
+    <link rel="stylesheet" href="vt-toolbar-item.css"/>
+    <paper-button style="background : {{(tool.isOpened) ? tool.color : 'initial'}}" raised="{{tool.isOpened}}" on-click="{{clickTool}}">
+      <template if="{{icon}}">
+        <core-icon icon="{{icon}}"></core-icon>
+      </template>
+      {{tool.name}}
+    </paper-button>
+  </template>
+  <script type="text/javascript" src="../underscore/underscore.js"></script>
+  <script>
+    (function(){
+      Polymer('vt-toolbar-item',{
+        tool : {},
+        clickTool : function(ev){
+          var clickedTool = this.tool;
+          this.fire('click_tool', {'tool':clickedTool});
+          if (clickedTool.isOpened){
+            closeTool(clickedTool, function(err, data){
+              clickedTool.isOpened = false;
+            });
+          }else{
+            openTool(clickedTool, function(err, data){
+              clickedTool.isOpened = true;
+            });
+          }
+        }
+      });
+    })();
+  </script>
+</polymer-element>
